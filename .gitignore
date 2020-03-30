@@ -1,0 +1,41 @@
+.coverage
+.python-version
+*.egg-info
+*.log
+*.mo
+*.py?
+*.swp
+# dirs
+bin/
+buildout-cache/
+develop-eggs/
+eggs/
+htmlcov/
+include/
+lib/
+local/
+node_modules/
+parts/
+src/*
+dist/*
+var/
+# files
+.installed.cfg
+.mr.developer.cfg
+lib64
+log.html
+output.xml
+pip-selfcheck.json
+report.html
+.Python
+.vscode/
+.tox/
+reports/
+Pipfile*
+# excludes
+!.coveragerc
+!.editorconfig
+!.gitattributes
+!.gitignore
+!.gitkeep
+!.travis.yml
