@@ -2,16 +2,8 @@
 from app import create_app
 from flask_mail import Message
 
-import requests
-
 app = create_app()
 app.app_context().push()
-
-
-def retrieve_message_infos(channel_url, message_id):
-    import pdb
-
-    pdb.set_trace()
 
 
 def background_task(
