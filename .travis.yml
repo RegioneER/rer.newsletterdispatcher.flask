@@ -17,4 +17,4 @@ install:
 
 script:
   - bin/code-analysis
-  - bin/pytest
+  - bin/pytest tests
