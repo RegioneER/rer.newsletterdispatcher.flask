@@ -36,27 +36,18 @@ def test_route_does_not_accept_empty_request(client):
     }
 
 
-def test_route_has_two_required_parameters(client):
-    # Given
-    payload = json.dumps({'_authenticator': 'foo'})
-
-    # When
-    response = client.post(
-        '/add-to-queue',
-        headers={"Content-Type": "application/json"},
-        data=payload,
-    )
-
-    # Then
-    assert response.status_code == 400
-    assert response.json['message'] == {
-        'uid': 'Missing required parameter in the JSON body or the post body or the query string'  # noqa
-    }
-
-
 def test_route_return_queue_infos(client):
     # Given
-    payload = json.dumps({'_authenticator': 'foo', 'uid': 'bar'})
+    payload = json.dumps(
+        {
+            'channel_url': 'http://foo.com',
+            'subscribers': ['foo', 'bar'],
+            'subject': 'subject',
+            'mfrom': 'foo@bar.com',
+            '_authenticator': 'asdfghjkl',
+            'text': '...',
+        }
+    )
 
     # When
     response = client.post(

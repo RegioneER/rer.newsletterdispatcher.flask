@@ -4,16 +4,23 @@ from flask_mail import Mail
 from flask_restful import Api
 from rq import Queue
 from routes import routes_bp
+
+import os
 import redis
+
+
+def testing_enabled():
+    testing = os.environ.get("TESTING", default="false")
+    return testing.lower() in {"1", "t", "true"}
 
 
 def create_app(debug=True):
     """Create an application."""
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_pyfile('config.cfg', silent=True)
-
+    app.config['TESTING'] = testing_enabled()
     app.redis = redis.Redis()
-    app.task_queue = Queue(connection=app.redis)
+    app.task_queue = Queue(connection=app.redis, default_timeout=600)
     app.mail = Mail(app)
     Api(routes_bp)
     app.register_blueprint(routes_bp)
