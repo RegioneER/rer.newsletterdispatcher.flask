@@ -10,7 +10,7 @@ import redis
 def create_app(debug=True):
     """Create an application."""
     app = Flask(__name__, instance_relative_config=True)
-    app.config.from_pyfile('config.cfg')
+    app.config.from_pyfile('config.cfg', silent=True)
 
     app.redis = redis.Redis()
     app.task_queue = Queue(connection=app.redis)
