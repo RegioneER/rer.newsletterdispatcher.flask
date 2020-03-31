@@ -6,4 +6,4 @@ prod:
 	bin/gunicorn -c gunicorn_config.py production:app
 
 test:
-	TESTING=true bin/pytest
+	TESTING=true bin/pytest tests
