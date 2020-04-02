@@ -13,6 +13,6 @@ Development
 - Lanciare il buildout: ``bin/buildout``
 
 
-- Per avviare ``rq``: ``./bin/rq worker``
 - Per avviare ``redis``: ``./bin/redis-server``
+- Per avviare ``rq`` (**dopo** redis): ``./bin/rq worker``
 - Per avviare l'app ``flask``: ``make dev``
