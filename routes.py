@@ -4,7 +4,6 @@ from flask import current_app as app
 from flask_restful import Api
 from flask_restful import reqparse
 from flask_restful import Resource
-from flask import request
 
 routes_bp = Blueprint("routes", __name__)
 api = Api(routes_bp)
