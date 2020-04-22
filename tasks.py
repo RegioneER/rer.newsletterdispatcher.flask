@@ -7,7 +7,7 @@ app.app_context().push()
 
 
 def background_task(
-    channel_url, text, subscribers, subject, mfrom, _authenticator
+    channel_url, text, subscribers, subject, mfrom, _authenticator, send_uid
 ):
     """ Function that returns len(n) and simulates a delay """
     with app.mail.connect() as conn:
