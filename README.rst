@@ -96,6 +96,6 @@ Authors
 
 This product was developed by **RedTurtle Technology** team.
 
-.. image:: https://www.redturtle.it/redturtle.png
+.. image:: https://avatars1.githubusercontent.com/u/1087171?s=200&v=4
    :alt: RedTurtle Technology Site
    :target: http://www.redturtle.it/
