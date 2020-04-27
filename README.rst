@@ -6,9 +6,8 @@ rer.newsletterdispatcher.flask
     :target: https://travis-ci.com/RegioneER/rer.newsletterdispatcher.flask
 
 
-A separate mail dispatcher for `rer.newsletter`_.
+A separate mail dispatcher for `rer.newsletter <https://github.com/RegioneER/rer.newsletter>`_.
 
-_https://github.com/RegioneER/rer.newsletter
 
 This is useful when you have channels with a lot of subscriptions (we had some with > 70000) and don't want to
 block Plone instances to do this long job.
@@ -76,9 +75,8 @@ Needed parameters for this route are:
 - subscribers
 - text
 
-There is already a plugin for rer.newsletter called `rer.newsletterplugin.flask`_ that do this job.
+There is already a plugin for rer.newsletter called `rer.newsletterplugin.flask <https://github.com/RegioneER/rer.newsletterplugin.flask>`_ that do this job.
 
-_https://github.com/RegioneER/rer.newsletterplugin.flask
 
 Security
 --------
