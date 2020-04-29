@@ -17,4 +17,4 @@ install:
 
 script:
   - bin/code-analysis
-  - make tests
+  - make test
