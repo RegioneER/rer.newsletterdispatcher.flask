@@ -32,19 +32,20 @@ def test_route_does_not_accept_empty_request(client):
     # Then
     assert response.status_code == 400
     assert response.json['message'] == {
-        '_authenticator': 'Missing required parameter in the JSON body or the post body or the query string'  # noqa
+        'channel_url': 'Missing required parameter in the JSON body or the post body or the query string'  # noqa
     }
 
 
 def test_route_return_queue_infos(client):
     # Given
+
     payload = json.dumps(
         {
             'channel_url': 'http://foo.com',
             'subscribers': ['foo', 'bar'],
             'subject': 'subject',
             'mfrom': 'foo@bar.com',
-            '_authenticator': 'asdfghjkl',
+            'send_uid': 'asdfghjkl',
             'text': '...',
         }
     )

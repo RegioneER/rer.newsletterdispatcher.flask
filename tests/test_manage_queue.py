@@ -11,7 +11,7 @@ EXAMPLE_PARAMETERS = {
     'subscribers': ['example-{}@foo.it'.format(x) for x in range(100)],
     'subject': 'Newsletter vol. Foo',
     'mfrom': 'foo@bar.com',
-    '_authenticator': 'asdfghjkl',
+    'send_uid': 'asdfghjkl',
     'text': EXAMPLE_HTML,
 }
 
@@ -24,6 +24,9 @@ def app():
 
 
 def test_job_executes_correctly(app, requests_mock):
+
+    requests_mock.post('http://foo.com/@send-complete', status_code=204)
+
     job = app.task_queue.enqueue(
         'tasks.background_task', kwargs=EXAMPLE_PARAMETERS
     )
