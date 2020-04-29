@@ -1,0 +1,20 @@
+dist: bionic
+language: python
+sudo: false
+cache:
+  pip: true
+  directories:
+    - eggs
+python:
+  - "3.7"
+
+before_install:
+  - virtualenv -p `which python` .
+  - bin/pip install -r requirements.txt
+
+install:
+  - bin/buildout -c development.cfg -N -t 3 code-analysis:return-status-codes=True
+
+script:
+  - bin/code-analysis
+  - make test

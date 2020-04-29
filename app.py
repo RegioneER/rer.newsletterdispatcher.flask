@@ -1,29 +1,35 @@
+# -*- coding: utf-8 -*-
 from flask import Flask
 from flask_mail import Mail
-from flask_mail import Message
+from flask_restful import Api
+from rq import Queue
+from routes import routes_bp
 
-app = Flask(__name__)
-mail = Mail(app)
+import os
+import redis
+import logging
 
-mails = ['aaa@gmail.com', 'bbb@gmail.com']
+
+def testing_enabled():
+    testing = os.environ.get("TESTING", default="false")
+    return testing.lower() in {"1", "t", "true"}
 
 
-@app.route("/")
-def index():
+def create_app(debug=True):
+    """Create an application."""
+    logging.basicConfig(
+        filename='newsletter_dispatcher.log',
+        level=logging.INFO,
+        format="[%(asctime)s] %(levelname)s - %(message)s",
+    )
 
-    with mail.connect() as conn:
-        print "Inizio la spedizione"
-        for x in range(70000):
-            email = 'ciccio-{}@qualcosa.it'.format(x)
-            print email
-            message = '...'
-            subject = "hello, %s" % email
-            msg = Message(
-                sender="from@example.com",
-                recipients=[email],
-                body=message,
-                subject=subject,
-            )
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_pyfile('config.cfg', silent=True)
+    app.config['TESTING'] = testing_enabled()
+    app.redis = redis.Redis()
+    app.task_queue = Queue(connection=app.redis, default_timeout=6000)
+    app.mail = Mail(app)
+    Api(routes_bp)
+    app.register_blueprint(routes_bp)
 
-            conn.send(msg)
-        print "Finita"
+    return app

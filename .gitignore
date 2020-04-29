@@ -8,10 +8,13 @@
 # dirs
 bin/
 buildout-cache/
+buildout.cfg
 develop-eggs/
 eggs/
+etc/
 htmlcov/
 include/
+instance/
 lib/
 local/
 node_modules/
