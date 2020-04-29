@@ -11,10 +11,9 @@ python:
 before_install:
   - virtualenv -p `which python` .
   - bin/pip install -r requirements.txt
-  - ln -s development.cfg buildout.cfg
 
 install:
-  - bin/buildout -N -t 3 code-analysis:return-status-codes=True
+  - bin/buildout -c development -N -t 3 code-analysis:return-status-codes=True
 
 script:
   - bin/code-analysis
