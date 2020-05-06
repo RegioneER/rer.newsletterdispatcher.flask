@@ -17,15 +17,16 @@ def testing_enabled():
 
 def create_app(debug=True):
     """Create an application."""
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_pyfile('config.cfg', silent=True)
+    app.config['TESTING'] = testing_enabled()
+
     logging.basicConfig(
-        filename='newsletter_dispatcher.log',
+        filename='var/log/newsletter_dispatcher.log',
         level=logging.INFO,
         format="[%(asctime)s] %(levelname)s - %(message)s",
     )
 
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_pyfile('config.cfg', silent=True)
-    app.config['TESTING'] = testing_enabled()
     app.redis = redis.Redis()
     app.task_queue = Queue(connection=app.redis, default_timeout=6000)
     app.mail = Mail(app)
