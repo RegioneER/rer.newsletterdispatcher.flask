@@ -45,7 +45,7 @@ def background_task(channel_url, text, subscribers, subject, mfrom, send_uid):
             json={'send_uid': send_uid, 'error': True},
         )
         return
-    requests.post(
+    res = requests.post(
         '{}/@send-complete'.format(channel_url),
         headers={
             'Accept': 'application/json',
@@ -53,4 +53,10 @@ def background_task(channel_url, text, subscribers, subject, mfrom, send_uid):
         },
         json={'send_uid': send_uid},
     )
+    if res.code != 204:
+        logger.error(
+            'Unable to update date to remote: {code} - {reason}'.format(
+                code=res.code, reason=res.reason
+            )
+        )
     logger.info('Task complete.')
