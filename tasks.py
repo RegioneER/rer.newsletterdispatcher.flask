@@ -53,10 +53,10 @@ def background_task(channel_url, text, subscribers, subject, mfrom, send_uid):
         },
         json={'send_uid': send_uid},
     )
-    if res.code != 204:
+    if res.status_code != 204:
         logger.error(
-            'Unable to update date to remote: {code} - {reason}'.format(
-                code=res.code, reason=res.reason
+            'Unable to update date to remote: received "{code}" instead a "204".'.format(  #  noqa
+                code=res.status_code
             )
         )
     logger.info('Task complete.')
