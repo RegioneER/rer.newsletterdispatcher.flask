@@ -57,6 +57,17 @@ In **production** mode we use ``supervisor`` to manage all processes in backgrou
 
 And it will start and manage all services.
 
+
+Custom configurations
+---------------------
+
+You can add a ``config.py`` file in the root of the application to add custom configuration for Flask app.
+
+For example if you want to customize Flask-Mail mail server address (default is localhost), you can create a file like this::
+
+    Class Config(object):
+        MAIL_SERVER = 'my.custom.server'
+
 Usage
 -----
 
@@ -67,7 +78,6 @@ Once the job is ready to be executed, it will send a list of emails with infos p
 
 Needed parameters for this route are:
 
-- _authenticator
 - channel_url
 - mfrom
 - send_uid
