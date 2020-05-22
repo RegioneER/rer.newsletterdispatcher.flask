@@ -1,0 +1,80 @@
+# This repository adheres to the publiccode.yml standard by including this
+# metadata file that makes public software easily discoverable.
+# More info at https://github.com/italia/publiccode.yml
+
+publiccodeYmlVersion: "0.2"
+categories:
+  - application-development
+  - communications
+dependsOn:
+  open:
+    - name: Flask
+      optional: false
+      version: ""
+      versionMax: ""
+      versionMin: ""
+logo: rer-logo.png
+description:
+  it:
+    features:
+      - Invio newsletter
+      - Gesione di code
+    genericName: Applicazione Flask
+    longDescription: >
+      Applicazione Flask separata da Plone per gestire l'invio di mail massivo e
+      scaricare il compito da Plone, senza quindi bloccare le sue istanze.
+
+      Questa applicazione è nata per essere un'utility di rer.newsletter ed è composta da 3
+      parti principali:
+
+        - App Flask (per spedire le mail)
+        - Redis (per gestire le code di invio)
+        - Rq (libreria Python per l'integrazione tra Redis e Flask)
+
+      ## Utilizzo
+
+
+      Questa app espone un'unico endpoint REST (/add-to-queue) al quale passare tutte le informazioni
+      necessarie per spedire la newsletter ad una lista di iscritti.
+
+    shortDescription: Invio massivo di mail fuori da Plone
+developmentStatus: development
+it:
+  conforme:
+    gdpr: true
+    lineeGuidaDesign: false
+    misureMinimeSicurezza: true
+    modelloInteroperabilita: false
+  countryExtensionVersion: "0.2"
+  piattaforme:
+    anpr: false
+    cie: false
+    pagopa: false
+    spid: false
+legal:
+  license: GPL-2.0-only
+  mainCopyrightOwner: Regione Emilia-Romagna
+  repoOwner: Regione Emilia-Romagna
+localisation:
+  availableLanguages:
+    - en
+  localisationReady: false
+maintenance:
+  contacts:
+    - affiliation: Regione Emilia-Romagna
+      email: webmaster@regione.emilia-romagna.it
+      name: Sara Turra
+  contractors:
+    - name: RedTurtle
+      until: "2020-08-31"
+      website: "https://www.redturtle.it/"
+  type: contract
+name: rer.newsletterdispatcher.flask
+platforms:
+  - web
+releaseDate: "2020-05-22"
+softwareType: standalone/web
+softwareVersion: 0.1.0
+url: "https://github.com/RegioneER/rer.newsletterdispatcher.flask"
+usedBy:
+  - Regione Emilia-Romagna
