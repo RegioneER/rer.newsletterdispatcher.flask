@@ -40,6 +40,8 @@ description:
     shortDescription: Invio massivo di mail fuori da Plone
 developmentStatus: development
 it:
+  riuso:
+    codiceIPA: r_emiro
   conforme:
     gdpr: true
     lineeGuidaDesign: false
