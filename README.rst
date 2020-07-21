@@ -63,10 +63,38 @@ Custom configurations
 
 You can add a ``config.py`` file in the root of the application to add custom configuration for Flask app.
 
-For example if you want to customize Flask-Mail mail server address (default is localhost), you can create a file like this::
+For example if you want to addcustomize Flask-Mail mail server address (default is localhost), you can create a file like this::
 
     Class Config(object):
         MAIL_SERVER = 'my.custom.server'
+
+You can set base Flask config parameters and some application-related ones:
+
+- MAIL_SERVER (mailserver address)
+- SENTRY_DSN (sentry dsn value)
+- REDIS_PORT (port where redis should listen. Default is 6379 but it's better to change it)
+
+
+Custom buildout configurations
+------------------------------
+
+You can run a buildout with some custom configurations like ports.
+
+To do this, you only need to extend another buildout (for example *production.cfg*) and add your additional customizations::
+
+    [buildout]
+    extends =
+        production.cfg
+
+    [ports]
+    gunicorn = 1111
+    redis = 2222
+
+After that you only need to re-run buildout with::
+
+    bin/buildout -Nc name_of_cfg_file.cfg
+
+
 
 Usage
 -----
