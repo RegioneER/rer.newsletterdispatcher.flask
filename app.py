@@ -16,7 +16,8 @@ logger = logging.getLogger(__name__)
 
 
 def testing_enabled():
-    testing = os.environ.get("TESTING", default="false")
+    # testing = os.environ.get("TESTING", default="false")
+    testing = os.environ.get("TESTING", "false")
     return testing.lower() in {"1", "t", "true"}
 
 
@@ -38,7 +39,7 @@ def create_app(debug=True):
         sentry_sdk.init(
             dsn=app.config.get("SENTRY_DSN", ""),
             integrations=[FlaskIntegration()],
-            debug=True,
+            # debug=True,
         )
 
     app.config["TESTING"] = testing_enabled()
