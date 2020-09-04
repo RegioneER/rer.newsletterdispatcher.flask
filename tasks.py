@@ -9,7 +9,7 @@ app = create_app()
 app.app_context().push()
 
 
-logger = logging.getLogger('[QUEUE]')
+logger = logging.getLogger("[QUEUE]")
 
 
 def background_task(channel_url, text, subscribers, subject, mfrom, send_uid):
@@ -27,31 +27,26 @@ def background_task(channel_url, text, subscribers, subject, mfrom, send_uid):
                     html=text,
                     subject=subject,
                     sender=mfrom,
-                    charset='utf-8',
+                    charset="utf-8",
                 )
                 conn.send(msg)
-                # logger.debug(
-                #     '[{}/{}] - {}'.format(i + 1, len(subscribers), mto)
-                # )
+                if (i + 1) % 1000 == 0:
+                    logger.info(
+                        "- Sending status: {}/{}".format(i + 1, len(subscribers))
+                    )
     except ConnectionRefusedError as e:
-        logger.error('Message not sent:')
+        logger.error("Message not sent:")
         logger.exception(e)
         requests.post(
-            '{}/@send-complete'.format(channel_url),
-            headers={
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            json={'send_uid': send_uid, 'error': True},
+            "{}/@send-complete".format(channel_url),
+            headers={"Accept": "application/json", "Content-Type": "application/json"},
+            json={"send_uid": send_uid, "error": True},
         )
         return
     res = requests.post(
-        '{}/@send-complete'.format(channel_url),
-        headers={
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        json={'send_uid': send_uid},
+        "{}/@send-complete".format(channel_url),
+        headers={"Accept": "application/json", "Content-Type": "application/json"},
+        json={"send_uid": send_uid},
     )
     if res.status_code != 204:
         logger.error(
@@ -59,4 +54,4 @@ def background_task(channel_url, text, subscribers, subject, mfrom, send_uid):
                 code=res.status_code
             )
         )
-    logger.info('Task complete.')
+    logger.info("Task complete.")
