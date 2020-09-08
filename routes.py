@@ -27,7 +27,7 @@ class AddToQueue(Resource):
         job = app.task_queue.enqueue(
             "tasks.background_task",
             kwargs=args,
-            job_timeout=len(args["subscribers"]) * 2,
+            job_timeout=len(args["subscribers"]) * 5,
         )
         logger.info(
             'Add to queue "{subject}" for {subscribers} subscribers.'.format(  # noqa
