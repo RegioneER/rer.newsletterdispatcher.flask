@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.1 (2020-09-04)
+1.0.1 (2020-09-08)
 ------------------
 
 - Dynamic job_timeout based on number of recipients.
