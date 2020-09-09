@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import create_app
 from flask_mail import Message
+from smtplib import SMTPRecipientsRefused
 
 import logging
 import requests
@@ -29,23 +30,34 @@ def background_task(channel_url, text, subscribers, subject, mfrom, send_uid):
                     sender=mfrom,
                     charset="utf-8",
                 )
-                conn.send(msg)
+                try:
+                    conn.send(msg)
+                except SMTPRecipientsRefused:
+                    logger.info("[SKIP] - {}: invalid address.".format(mto))
                 if (i + 1) % 1000 == 0:
                     logger.info(
-                        "- Sending status: {}/{}".format(i + 1, len(subscribers))
+                        "- Sending status: {}/{}".format(
+                            i + 1, len(subscribers)
+                        )
                     )
     except ConnectionRefusedError as e:
         logger.error("Message not sent:")
         logger.exception(e)
         requests.post(
             "{}/@send-complete".format(channel_url),
-            headers={"Accept": "application/json", "Content-Type": "application/json"},
+            headers={
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
             json={"send_uid": send_uid, "error": True},
         )
         return
     res = requests.post(
         "{}/@send-complete".format(channel_url),
-        headers={"Accept": "application/json", "Content-Type": "application/json"},
+        headers={
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
         json={"send_uid": send_uid},
     )
     if res.status_code != 204:

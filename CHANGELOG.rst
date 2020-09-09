@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0.2 (Unreleased)
+------------------
+
+- Handle SMTPRecipientsRefused exception.
+  [cekk]
+
 1.0.1 (2020-09-08)
 ------------------
 
