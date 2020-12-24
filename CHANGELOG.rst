@@ -4,7 +4,7 @@ Changelog
 1.0.2 (Unreleased)
 ------------------
 
-- Handle SMTPRecipientsRefused exception.
+- Handle Exceptions and return error state.
   [cekk]
 
 1.0.1 (2020-09-08)

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from app import create_app
 from flask_mail import Message
-from smtplib import SMTPRecipientsRefused
 
 import logging
 import requests
@@ -40,7 +39,7 @@ def background_task(channel_url, text, subscribers, subject, mfrom, send_uid):
                             i + 1, len(subscribers)
                         )
                     )
-    except ConnectionRefusedError as e:
+    except Exception as e:
         logger.error("Message not sent:")
         logger.exception(e)
         requests.post(
