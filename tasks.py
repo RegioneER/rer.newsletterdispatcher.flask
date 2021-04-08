@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import create_app
 from flask_mail import Message
+from smtplib import SMTPRecipientsRefused
 
 import logging
 import requests
@@ -12,8 +13,9 @@ app.app_context().push()
 logger = logging.getLogger("[QUEUE]")
 
 
-def background_task(channel_url, text, subscribers, subject, mfrom, send_uid):
-    """ Function that returns len(n) and simulates a delay """
+def background_task(
+    channel_url, text, subscribers, subject, mfrom, send_uid, attachments=[]
+):
     logger.info(
         'Start send "{subject}" to {subscribers} recipients through channel "{channel}".'.format(  #  noqa
             subject=subject, subscribers=len(subscribers), channel=channel_url
@@ -29,6 +31,12 @@ def background_task(channel_url, text, subscribers, subject, mfrom, send_uid):
                     sender=mfrom,
                     charset="utf-8",
                 )
+                for attachment in attachments:
+                    msg.attach(
+                        filename=attachment.get("filename", ""),
+                        data=attachment.get("data", ""),
+                        content_type=attachment.get("content_type", ""),
+                    )
                 try:
                     conn.send(msg)
                 except SMTPRecipientsRefused:
