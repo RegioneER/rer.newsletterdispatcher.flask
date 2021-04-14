@@ -50,27 +50,29 @@ def background_task(
     except Exception as e:
         logger.error("Message not sent:")
         logger.exception(e)
-        requests.post(
+        if send_uid:
+            requests.post(
+                "{}/@send-complete".format(channel_url),
+                headers={
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                json={"send_uid": send_uid, "error": True},
+            )
+        return
+    if send_uid:
+        res = requests.post(
             "{}/@send-complete".format(channel_url),
             headers={
                 "Accept": "application/json",
                 "Content-Type": "application/json",
             },
-            json={"send_uid": send_uid, "error": True},
+            json={"send_uid": send_uid},
         )
-        return
-    res = requests.post(
-        "{}/@send-complete".format(channel_url),
-        headers={
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        },
-        json={"send_uid": send_uid},
-    )
-    if res.status_code != 204:
-        logger.error(
-            'Unable to update date to remote: received "{code}" instead a "204".'.format(  #  noqa
-                code=res.status_code
+        if res.status_code != 204:
+            logger.error(
+                'Unable to update date to remote: received "{code}" instead a "204".'.format(  #  noqa
+                    code=res.status_code
+                )
             )
-        )
     logger.info("Task complete.")
