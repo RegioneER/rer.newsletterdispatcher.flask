@@ -50,29 +50,33 @@ def background_task(
     except Exception as e:
         logger.error("Message not sent:")
         logger.exception(e)
-        if send_uid:
-            requests.post(
-                "{}/@send-complete".format(channel_url),
-                headers={
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                },
-                json={"send_uid": send_uid, "error": True},
-            )
+        send_complete(channel_url=channel_url, send_uid=send_uid, error=True)
         return
-    if send_uid:
-        res = requests.post(
-            "{}/@send-complete".format(channel_url),
-            headers={
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            },
-            json={"send_uid": send_uid},
-        )
-        if res.status_code != 204:
-            logger.error(
-                'Unable to update date to remote: received "{code}" instead a "204".'.format(  #  noqa
-                    code=res.status_code
-                )
-            )
+    send_complete(channel_url=channel_url, send_uid=send_uid)
     logger.info("Task complete.")
+
+
+def send_complete(channel_url, send_uid, error=False):
+    if not send_uid:
+        return
+    url = "{}/@send-complete".format(channel_url)
+    data = {"send_uid": send_uid}
+    if error:
+        data[error] = error
+    res = requests.post(
+        url,
+        headers={
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        json=data,
+    )
+    if res.status_code != 204:
+        logger.error(
+            'Unable to update status to remote: received "{code}" instead a "204".'.format(  # noqa
+                code=res.status_code
+            )
+        )
+        logger.error("Called url: {}.".format(url))
+        logger.error("Parameters: {}.".format(data))
+        logger.error("Error: {}.".format(res.json()))
