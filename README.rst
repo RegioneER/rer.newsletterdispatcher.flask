@@ -113,6 +113,8 @@ Needed parameters for this route are:
 - subscribers
 - text
 
+You can also attach some files to the POST call and they will be send as mail attachments.
+
 There is already a plugin for rer.newsletter called `rer.newsletterplugin.flask <https://github.com/RegioneER/rer.newsletterplugin.flask>`_ that do this job.
 
 
