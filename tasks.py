@@ -2,6 +2,7 @@
 from app import create_app
 from flask_mail import Message
 from smtplib import SMTPRecipientsRefused
+from json.decoder import JSONDecodeError
 
 import logging
 import requests
@@ -79,4 +80,7 @@ def send_complete(channel_url, send_uid, error=False):
         )
         logger.error("Called url: {}.".format(url))
         logger.error("Parameters: {}.".format(data))
-        logger.error("Error: {}.".format(res.json()))
+        try:
+            logger.error("Error: {}.".format(res.json()))
+        except JSONDecodeError:
+            logger.error("Error: {}.".format(res.text))
