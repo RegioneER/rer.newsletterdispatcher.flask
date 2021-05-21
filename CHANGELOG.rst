@@ -1,11 +1,12 @@
 Changelog
 =========
 
-1.0.2 (Unreleased)
+1.1.0 (2021-05-21)
 ------------------
 
 - Handle Exceptions and return error state.
   [cekk]
+- Handle attachments.
 
 1.0.1 (2020-09-08)
 ------------------
