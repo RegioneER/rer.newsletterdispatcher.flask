@@ -4,6 +4,7 @@ from flask import current_app as app
 from flask_restful import Api
 from flask_restful import reqparse
 from flask_restful import Resource
+from flask import request
 
 import logging
 
@@ -23,15 +24,26 @@ parser.add_argument("text", type=str, required=True)
 
 class AddToQueue(Resource):
     def post(self):
-        args = parser.parse_args(strict=True)
+        params = parser.parse_args(strict=True)
+        files = request.files
+        if files:
+            params["attachments"] = [
+                {
+                    "content_type": v.content_type,
+                    "filename": k,
+                    "data": v.read(),
+                }
+                for k, v in files.items()
+            ]
         job = app.task_queue.enqueue(
             "tasks.background_task",
-            kwargs=args,
-            job_timeout=len(args["subscribers"]) * 5,
+            kwargs=params,
+            job_timeout=len(params["subscribers"]) * 5,
         )
         logger.info(
-            'Add to queue "{subject}" for {subscribers} subscribers.'.format(  # noqa
-                subject=args["subject"], subscribers=len(args["subscribers"])
+            'Add to queue "{subject}" for {subscribers} subscribers.'.format(
+                subject=params["subject"],
+                subscribers=len(params["subscribers"]),
             )
         )
         return {"job_id": job.id, "date": job.enqueued_at.isoformat()}
