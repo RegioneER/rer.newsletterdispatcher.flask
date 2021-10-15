@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from app import create_app
-from flask_mail import Message
+from flask_mailman import EmailMessage
 from smtplib import SMTPRecipientsRefused
 from json.decoder import JSONDecodeError
 
@@ -23,30 +23,29 @@ def background_task(
         )
     )
     try:
-        with app.mail.connect() as conn:
+        with app.mail.get_connection() as conn:
             for i, mto in enumerate(subscribers):
-                msg = Message(
-                    recipients=[mto],
-                    html=text,
+                msg = EmailMessage(
+                    from_email=mfrom,
+                    to=[mto],
+                    body=text,
                     subject=subject,
-                    sender=mfrom,
-                    charset="utf-8",
+                    connection=conn,
                 )
+                msg.content_subtype = "html"
                 for attachment in attachments:
                     msg.attach(
                         filename=attachment.get("filename", ""),
-                        data=attachment.get("data", ""),
-                        content_type=attachment.get("content_type", ""),
+                        content=attachment.get("data", ""),
+                        mimetype=attachment.get("content_type", ""),
                     )
                 try:
-                    conn.send(msg)
+                    msg.send()
                 except SMTPRecipientsRefused:
                     logger.info("[SKIP] - {}: invalid address.".format(mto))
                 if (i + 1) % 1000 == 0:
                     logger.info(
-                        "- Sending status: {}/{}".format(
-                            i + 1, len(subscribers)
-                        )
+                        "- Sending status: {}/{}".format(i + 1, len(subscribers))
                     )
     except Exception as e:
         logger.error("Message not sent:")

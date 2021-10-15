@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
-from flask_mail import Mail
+
+# from flask_mail import Mail
+from flask_mailman import Mail
 from flask_restful import Api
 from rq import Queue
 from routes import routes_bp
