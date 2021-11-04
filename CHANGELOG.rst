@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.0.0 (Unreleased)
+------------------
+
+- Use flask-mailman instead of unmaintained flask-mail.
+  [cekk]
+
+
 1.1.0 (2021-05-21)
 ------------------
 
