@@ -1,7 +1,14 @@
 Changelog
 =========
 
-2.0.0 (2021-11/04)
+2.0.1 (2023-02-15)
+------------------
+
+- Fix dependencies versions.
+  [cekk]
+
+
+2.0.0 (2021-11-04)
 ------------------
 
 - Use flask-mailman instead of unmaintained flask-mail.
