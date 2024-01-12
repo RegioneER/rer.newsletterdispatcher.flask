@@ -11,6 +11,4 @@ RUN apt-get update && \
 
 EXPOSE 4000/tcp
 
-HEALTHCHECK --interval=30s --timeout=3s CMD curl --fail http://localhost:4020/ || exit 1
-
 ENTRYPOINT ["bin/supervisord", "-n"]
