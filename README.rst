@@ -1,10 +1,10 @@
+.. image:: https://github.com/RegioneER/rer.newsletterdispatcher.flask/actions/workflows/tests.yml/badge.svg
+    :target: https://github.com/RegioneER/rer.newsletterdispatcher.flask/actions
+    :alt: Tests
+
 ==============================
 rer.newsletterdispatcher.flask
 ==============================
-
-.. image:: https://travis-ci.com/RegioneER/rer.newsletterdispatcher.flask.svg?branch=master
-    :target: https://travis-ci.com/RegioneER/rer.newsletterdispatcher.flask
-
 
 A separate mail dispatcher for `rer.newsletter <https://github.com/RegioneER/rer.newsletter>`_.
 
