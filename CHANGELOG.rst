@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.1.0 (Unreleased)
+------------------
+
+- Open a new smtp connection for each recipient (because new RER smtp server has a 10min timeout).
+  [cekk]
+
 2.0.1 (2023-02-15)
 ------------------
 

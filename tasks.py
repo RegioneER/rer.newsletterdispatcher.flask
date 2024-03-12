@@ -23,8 +23,8 @@ def background_task(
         )
     )
     try:
-        with app.mail.get_connection() as conn:
-            for i, mto in enumerate(subscribers):
+        for i, mto in enumerate(subscribers):
+            with app.mail.get_connection() as conn:
                 msg = EmailMessage(
                     from_email=mfrom,
                     to=[mto],
