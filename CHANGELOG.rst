@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.0 (Unreleased)
+2.1.0 (2024-03-14)
 ------------------
 
 - Open a new smtp connection for each recipient (because new RER smtp server has a 10min timeout).
