@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 
 MAIL_SERVER = os.environ.get("RER_NEWSLETTERDISPATCHER_MAIL_SERVER", default="")
