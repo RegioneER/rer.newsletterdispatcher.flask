@@ -9,7 +9,6 @@
 bin/
 buildout-cache/
 buildout.cfg
-config.py
 develop-eggs/
 eggs/
 etc/
