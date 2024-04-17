@@ -61,18 +61,17 @@ And it will start and manage all services.
 Custom configurations
 ---------------------
 
-You can add a ``config.py`` file in the root of the application to add custom configuration for Flask app.
+You can add a custom configuration for Flask app by adding the environments variables
 
-For example if you want to addcustomize Flask-Mail mail server address (default is localhost), you can create a file like this::
+For example if you want to customize Flask-Mail mail server address (default is localhost), you can create this environment variable::
 
-    Class Config(object):
-        MAIL_SERVER = 'my.custom.server'
+   export RER_NEWSLETTERDISPATCHER_MAIL_SERVER="myserver.net"
 
 You can set base Flask config parameters and some application-related ones:
 
-- MAIL_SERVER (mailserver address)
-- SENTRY_DSN (sentry dsn value)
-- REDIS_PORT (port where redis should listen. Default is 6379 but it's better to change it)
+- RER_NEWSLETTERDISPATCHER_MAIL_SERVER (mailserver address)
+- RER_NEWSLETTERDISPATCHER_SENTRY_DSN (sentry dsn value)
+- RER_NEWSLETTERDISPATCHER_REDIS_PORT (port where redis should listen. Default is 6379 but it's better to change it)
 
 
 Custom buildout configurations
