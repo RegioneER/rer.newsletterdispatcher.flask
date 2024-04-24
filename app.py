@@ -45,10 +45,12 @@ def create_app(debug=True):
         )
 
     app.config["TESTING"] = testing_enabled()
-    if app.config.get("REDIS_PORT", ""):
-        app.redis = redis.Redis(port=app.config["REDIS_PORT"])
-    else:
-        app.redis = redis.Redis()
+
+    # setup redis connection
+    redis_port = app.config.get("REDIS_PORT", "6379") or "6379"
+    redis_host = app.config.get("REDIS_HOST", "localhost") or "localhost"
+    app.redis = redis.Redis(port=redis_port, host=redis_host)
+
     app.task_queue = Queue(connection=app.redis, default_timeout=10000)
     app.mail = Mail(app)
     Api(routes_bp)

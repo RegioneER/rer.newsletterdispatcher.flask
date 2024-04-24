@@ -5,9 +5,10 @@ on:
   push:
     branches:
       - master
+      - test_docker
     tags:
-      - '*'
-      
+      - "*"
+
   workflow_dispatch:
 
 jobs:

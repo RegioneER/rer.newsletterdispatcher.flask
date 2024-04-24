@@ -9,3 +9,4 @@ MAIL_PASSWORD = os.environ.get("RER_NEWSLETTERDISPATCHER_MAIL_PASSWORD", default
 
 # NOTE: Redis default port is 6379
 REDIS_PORT = os.environ.get("RER_NEWSLETTERDISPATCHER_REDIS_PORT", default="6379")
+REDIS_HOST = os.environ.get("RER_NEWSLETTERDISPATCHER_REDIS_HOST", default="localhost")
