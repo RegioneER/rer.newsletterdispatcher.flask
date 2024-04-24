@@ -33,7 +33,7 @@ def create_app(debug=True):
         format="[%(asctime)s] %(levelname)s - %(message)s",
     )
     try:
-        app.config.from_object("config.Config")
+        app.config.from_pyfile("config.py")
     except ImportStringError:
         logger.error("No config.py file found. Starting with standard configuration.")
 
