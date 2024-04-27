@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN apt-get update && \
+RUN apt-get update && apt-get install -y vim && \
     pip install -r requirements.txt && \
     buildout -N -c docker.cfg
 # sed -i 's/bind 127.0.0.1 ::1/bind 0.0.0.0/g'  ./etc/redis.conf
