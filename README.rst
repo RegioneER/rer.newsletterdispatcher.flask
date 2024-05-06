@@ -70,6 +70,9 @@ For example if you want to customize Flask-Mail mail server address (default is 
 You can set base Flask config parameters and some application-related ones:
 
 - RER_NEWSLETTERDISPATCHER_MAIL_SERVER (mailserver address)
+- RER_NEWSLETTERDISPATCHER_MAIL_PORT (mailserver port, 25 by default)[optional]
+- RER_NEWSLETTERDISPATCHER_MAIL_USERNAME (mailserver client username)[optional]
+- RER_NEWSLETTERDISPATCHER_MAIL_PASSWORD (mailserver cliend password)[optional]
 - RER_NEWSLETTERDISPATCHER_SENTRY_DSN (sentry dsn value)
 - RER_NEWSLETTERDISPATCHER_REDIS_PORT (port where redis should listen. Default is 6379 but it's better to change it)
 
