@@ -2,9 +2,12 @@
 from app import create_app
 from flask_mailman import EmailMessage
 from smtplib import SMTPRecipientsRefused
+from smtplib import SMTPServerDisconnected
+from smtplib import SMTPDataError
 from json.decoder import JSONDecodeError
 
 import logging
+import time
 import requests
 
 app = create_app()
@@ -22,47 +25,68 @@ def background_task(
             subject=subject, subscribers=len(subscribers), channel=channel_url
         )
     )
-    try:
-        for i, mto in enumerate(subscribers):
-            with app.mail.get_connection() as conn:
-                msg = EmailMessage(
-                    from_email=mfrom,
-                    to=[mto],
-                    body=text,
-                    subject=subject,
-                    connection=conn,
+    max_retries = 3  # Numero massimo di tentativi
+    for i, mto in enumerate(subscribers):
+        attempt = 0  # Contatore dei tentativi
+        while attempt < max_retries:
+            try:
+                attempt += 1
+                with app.mail.get_connection() as conn:
+                    msg = EmailMessage(
+                        from_email=mfrom,
+                        to=[mto],
+                        body=text,
+                        subject=subject,
+                        connection=conn,
+                    )
+                    msg.content_subtype = "html"
+                    for attachment in attachments:
+                        msg.attach(
+                            filename=attachment.get("filename", ""),
+                            content=attachment.get("data", ""),
+                            mimetype=attachment.get("content_type", ""),
+                        )
+                    try:
+                        msg.send()
+                    except SMTPRecipientsRefused:
+                        logger.info("[SKIP] - {}: invalid address.".format(mto))
+                    if (i + 1) % 1000 == 0:
+                        logger.info(
+                            "- Sending status: {}/{}".format(i + 1, len(subscribers))
+                        )
+                break
+            except (SMTPServerDisconnected, SMTPDataError) as e:
+                logger.error(f"Message not sent to {mto} for problems with smtp:")
+                logger.exception(e)
+                logger.error(
+                    f"waiting 5 seconds before retry. Remaining attempts: {max_retries - attempt}\n"
                 )
-                msg.content_subtype = "html"
-                for attachment in attachments:
-                    msg.attach(
-                        filename=attachment.get("filename", ""),
-                        content=attachment.get("data", ""),
-                        mimetype=attachment.get("content_type", ""),
-                    )
-                try:
-                    msg.send()
-                except SMTPRecipientsRefused:
-                    logger.info("[SKIP] - {}: invalid address.".format(mto))
-                if (i + 1) % 1000 == 0:
-                    logger.info(
-                        "- Sending status: {}/{}".format(i + 1, len(subscribers))
-                    )
-    except Exception as e:
-        logger.error("Message not sent:")
-        logger.exception(e)
-        send_complete(channel_url=channel_url, send_uid=send_uid, error=True)
-        return
+                time.sleep(5)
+            except Exception as e:
+                logger.error(f"Message not sent to {mto}:")
+                logger.exception(e)
+                logger.error(
+                    f"waiting 5 seconds before retry. Remaining attempts: {max_retries - attempt}\n"
+                )
+                time.sleep(5)
+        else:
+            logger.error(f"Message not sent: no more attempts. Stop sending messages.")
+            logger.error("Following addresses didn't received the message:")
+            for mto in subscribers[i:]:
+                logger.error(f"- {mto}")
+            send_complete(channel_url=channel_url, send_uid=send_uid, error=True)
+            return
     send_complete(channel_url=channel_url, send_uid=send_uid)
     logger.info("Task complete.")
 
 
-def send_complete(channel_url, send_uid, error=False):
+def send_complete(channel_url, send_uid, error=None):
     if not send_uid:
         return
     url = "{}/@send-complete".format(channel_url)
     data = {"send_uid": send_uid}
     if error:
-        data[error] = error
+        data["error"] = error
     res = requests.post(
         url,
         headers={
