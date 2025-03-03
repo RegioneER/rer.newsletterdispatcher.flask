@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.2.1 (2025-01-16)
+------------------
+
+- Improve Exceptions handling in background_task. Now it will retry the task three times if it fails.
+  [cekk]
+- Fix bug in send_complete method and return proper status when there is an error.
+  [cekk]
+
 2.1.0 (2024-03-14)
 ------------------
 
