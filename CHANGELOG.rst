@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.2.2 (2025-03-21)
+------------------
+
+- Increase job_timeout to 30s to better handle retries.
+  [cekk]
+
 2.2.1 (2025-01-16)
 ------------------
 
