@@ -1,6 +1,16 @@
 Changelog
 =========
 
+2.3.0 (2025-05-??)
+------------------
+
+- Add custom exception-handler to handle JobTimeoutException when task exceeded maximum timeout value.
+  [cekk]
+- Send to endpoint also an error_message.
+  [cekk]
+- Handle smtp timeout (default 120s) and made it configurable.
+  [cekk]
+
 2.2.2 (2025-03-21)
 ------------------
 

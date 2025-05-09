@@ -28,6 +28,7 @@ def background_task(
     max_retries = 3  # Numero massimo di tentativi
     for i, mto in enumerate(subscribers):
         attempt = 0  # Contatore dei tentativi
+        error_msg = ""
         while attempt < max_retries:
             try:
                 attempt += 1
@@ -61,8 +62,10 @@ def background_task(
                 logger.error(
                     f"waiting 5 seconds before retry. Remaining attempts: {max_retries - attempt}\n"
                 )
+                error_msg = str(e)
                 time.sleep(5)
             except Exception as e:
+                error_msg = str(e)
                 logger.error(f"Message not sent to {mto}:")
                 logger.exception(e)
                 logger.error(
@@ -74,19 +77,18 @@ def background_task(
             logger.error("Following addresses didn't received the message:")
             for mto in subscribers[i:]:
                 logger.error(f"- {mto}")
-            send_complete(channel_url=channel_url, send_uid=send_uid, error=True)
+            error_msg = f"{error_msg}. Sent {i} messages. Not sent {len(subscribers) - i}. See logs for more details."
+            send_complete(channel_url=channel_url, send_uid=send_uid, error=True, error_message=error_msg)
             return
     send_complete(channel_url=channel_url, send_uid=send_uid)
     logger.info("Task complete.")
 
 
-def send_complete(channel_url, send_uid, error=None):
+def send_complete(channel_url, send_uid, error=False, error_message=None):
     if not send_uid:
         return
     url = "{}/@send-complete".format(channel_url)
-    data = {"send_uid": send_uid}
-    if error:
-        data["error"] = error
+    data = {"send_uid": send_uid, "error": error, "error_message": error_message}
     res = requests.post(
         url,
         headers={
@@ -107,3 +109,17 @@ def send_complete(channel_url, send_uid, error=None):
             logger.error("Error: {}.".format(res.json()))
         except JSONDecodeError:
             logger.error("Error: {}.".format(res.text))
+
+
+def custom_failure_handler(job, exc_type, exc_value, traceback):
+    """
+    Error handler for RQ jobs. It is called by the RQ worker.
+    It is used to call send_complete() with the error information.
+    Basically when Task exceeded maximum timeout value
+    """
+    channel_url = job.kwargs.get('channel_url')
+    send_uid = job.kwargs.get('send_uid')
+
+    error_message = f"{exc_type.__name__}: {exc_value}"
+    send_complete(channel_url=channel_url, send_uid=send_uid, error_message=error_message,error=True)
+    return True
