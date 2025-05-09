@@ -78,7 +78,12 @@ def background_task(
             for mto in subscribers[i:]:
                 logger.error(f"- {mto}")
             error_msg = f"{error_msg}. Sent {i} messages. Not sent {len(subscribers) - i}. See logs for more details."
-            send_complete(channel_url=channel_url, send_uid=send_uid, error=True, error_message=error_msg)
+            send_complete(
+                channel_url=channel_url,
+                send_uid=send_uid,
+                error=True,
+                error_message=error_msg,
+            )
             return
     send_complete(channel_url=channel_url, send_uid=send_uid)
     logger.info("Task complete.")
@@ -117,9 +122,14 @@ def custom_failure_handler(job, exc_type, exc_value, traceback):
     It is used to call send_complete() with the error information.
     Basically when Task exceeded maximum timeout value
     """
-    channel_url = job.kwargs.get('channel_url')
-    send_uid = job.kwargs.get('send_uid')
+    channel_url = job.kwargs.get("channel_url")
+    send_uid = job.kwargs.get("send_uid")
 
     error_message = f"{exc_type.__name__}: {exc_value}"
-    send_complete(channel_url=channel_url, send_uid=send_uid, error_message=error_message,error=True)
+    send_complete(
+        channel_url=channel_url,
+        send_uid=send_uid,
+        error_message=error_message,
+        error=True,
+    )
     return True
