@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.0 (2025-05-??)
+2.3.0 (2025-05-12)
 ------------------
 
 - Add custom exception-handler to handle JobTimeoutException when task exceeded maximum timeout value.
