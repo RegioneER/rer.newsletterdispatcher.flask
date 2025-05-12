@@ -8,16 +8,16 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python: ["3.7"]
+        python: ["3.8"]
     steps:
       - uses: actions/checkout@v1
       - name: Cache eggs
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: eggs
           key: ${{ runner.OS }}-build-python${{ matrix.python }}
       - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python }}
       - name: Install dependencies
