@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
+import logging
+import os
+
+import redis
+import sentry_sdk
 from flask import Flask
 
 # from flask_mail import Mail
 from flask_mailman import Mail
 from flask_restful import Api
 from rq import Queue
-from routes import routes_bp
-from werkzeug.utils import ImportStringError
 from sentry_sdk.integrations.flask import FlaskIntegration
+from werkzeug.utils import ImportStringError
 
-import sentry_sdk
-import os
-import redis
-import logging
+from routes import routes_bp
 
 logger = logging.getLogger(__name__)
 

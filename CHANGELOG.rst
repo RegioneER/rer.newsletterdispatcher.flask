@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.3.1 (2025-08-08)
+------------------
+
+- Code cleanup (black + isort).
+  [cekk]
+- Handle comunication errors in send_complete: retry 3 times until giving up.
+  [cekk]
+
 2.3.0 (2025-05-12)
 ------------------
 

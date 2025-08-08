@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from app import create_app
-from pytest import fixture
 from fakeredis import FakeStrictRedis
+from pytest import fixture
 from rq import Queue
+
+from app import create_app
 
 
 @fixture

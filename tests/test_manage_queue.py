@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from app import create_app
 from fakeredis import FakeStrictRedis
 from pytest import fixture
 from rq import Queue
+
+from app import create_app
 
 EXAMPLE_HTML = (
     "<html><body><h1>Newsletter volume Foo</h1><p>Lorem ipsum</p></body></html>"  # noqa

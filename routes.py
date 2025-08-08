@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
+import logging
+
 from flask import Blueprint
 from flask import current_app as app
-from flask_restful import Api
-from flask_restful import reqparse
-from flask_restful import Resource
 from flask import request
-
-import logging
+from flask_restful import Api, Resource, reqparse
 
 logger = logging.getLogger("[API]")
 
@@ -35,16 +33,20 @@ class AddToQueue(Resource):
                 }
                 for k, v in files.items()
             ]
-        job = app.task_queue.enqueue(
-            "tasks.background_task",
-            kwargs=params,
-            job_timeout=len(params["subscribers"]) * 30,
-        )
+        logger.info("")
+        logger.info("#######################")
+        logger.info("###    START JOB    ###")
+        logger.info("#######################")
         logger.info(
             'Add to queue "{subject}" for {subscribers} subscribers.'.format(
                 subject=params["subject"],
                 subscribers=len(params["subscribers"]),
             )
+        )
+        job = app.task_queue.enqueue(
+            "tasks.background_task",
+            kwargs=params,
+            job_timeout=len(params["subscribers"]) * 30,
         )
         return {"job_id": job.id, "date": job.enqueued_at.isoformat()}
 
