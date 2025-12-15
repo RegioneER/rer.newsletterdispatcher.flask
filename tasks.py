@@ -37,6 +37,7 @@ def background_task(
                         body=text,
                         subject=subject,
                         connection=conn,
+                        headers={'List-Unsubscribe': '<https://test-portale-cm.regione.emilia-romagna.it>',"List-Unsubscribe-Post": "List-Unsubscribe=One-Click"}
                     )
                     msg.content_subtype = "html"
                     for attachment in attachments:
